@@ -1,5 +1,4 @@
 <head>
-  <meta charset="UTF-8">
   <title>stormy's Dots</title>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
@@ -34,17 +33,6 @@
 	  width: max-content;
     }
 
-/*
-    h1::after {
-      content: "stormy'S DOTS";
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      color: transparent;
-      -webkit-text-stroke: 1px #444;
-      z-index: -2;
-    }
-*/
   </style>
 </head>
 <body>
