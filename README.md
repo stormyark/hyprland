@@ -1,3 +1,6 @@
+<h1 align="center">
+  <a>
+  <br>
   <div>
     <a href="https://github.com/stormyark/hyprland/issues">
         <img src="https://img.shields.io/github/issues/stormyark/hyprland?color=ff914d&labelColor=303446&style=for-the-badge">
@@ -13,3 +16,4 @@
     </a>
     <br>
   </div>
+</h1>
