@@ -1,4 +1,4 @@
-<h1 align="center">
+<h2 align="center">
   <a>
   <br>
   <div>
@@ -16,4 +16,4 @@
     </a>
     <br>
   </div>
-</h1>
+</h2>
