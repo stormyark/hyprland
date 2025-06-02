@@ -1,39 +1,15 @@
-<head>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      /*height: 100vh;*/
-	  margin: 0;
-	  padding: 0;
-    }
-
-    h1 {
-      font-family: 'Press Start 2P', monospace;
-      font-size: 60px;
-      text-transform: uppercase;
-      background: linear-gradient(90deg, #ff914d, #ff4d78, #c54dff, #4da6ff, #00e6a8, #66cc66);
-      -webkit-background-clip: text;
-      color: transparent;
-      position: relative;
-    }
-
-    h1::before {
-      content: "STORMY'S DOTS";
-      position: absolute;
-      left: 6px;
-      top: 6px;
-      color: transparent;
-      -webkit-text-stroke: 2px #333;
-      z-index: -1;
-	  white-space: nowrap;
-	  width: max-content;
-    }
-
-  </style>
-</head>
-<body>
-  <h1>STORMY'S DOTS</h1>
-</body>
+  <div>
+    <a href="https://github.com/stormyark/hyprland/issues">
+        <img src="https://img.shields.io/github/issues/stormyark/hyprland?color=ff914d&labelColor=303446&style=for-the-badge">
+    </a>
+    <a href="https://github.com/stormyark/hyprland/stargazers">
+        <img src="https://img.shields.io/github/stars/stormyark/hyprland?color=ff4d78&labelColor=303446&style=for-the-badge">
+    </a>
+    <a href="https://github.com/stormyark/hyprland/">
+        <img src="https://img.shields.io/github/repo-size/stormyark/hyprland?color=c54dff&labelColor=303446&style=for-the-badge">
+    </a>
+    <a href="https://github.com/stormyark/hyprland/blob/master/LICENSE">
+        <img src="https://img.shields.io/static/v1.svg?style=for-the-badge&label=License&message=MIT&logoColor=4da6ff&colorA=313244&colorB=cba6f7"/>
+    </a>
+    <br>
+  </div>
