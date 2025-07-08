@@ -1,0 +1,83 @@
+/* Importing pywal colors */
+
+@import "../../.config/waybar/style/stormy/catppuccin-themes/mocha.css";
+
+* {
+  background-image: none;
+  font-family: "IBM Plex Mono";
+}
+
+window {
+  background-color: rgba(12, 12, 12, 0.7);
+}
+
+button {
+  color: #cdd6f4;
+  background-color: rgba(12, 12, 12, 0.7);
+  border-style: solid;
+  border-width: 2px;
+  border-radius: 12px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 25%;
+  border-color: rgba(205, 214, 244, 0.2);
+  margin: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover {
+  background-color: rgba(205, 214, 244, 0.1);
+  border-color: rgba(205, 214, 244, 0.3);
+}
+
+button:focus {
+  background-color: rgba(205, 214, 244, 0.2);
+  border-color: rgba(205, 214, 244, 0.4);
+}
+
+/* Adjust the size of the icon or content inside the button */
+button span {
+  font-size: 1.2em; /* Increase the font size */
+}
+
+#lock {
+  background-image: image(url("./icons/lock.png"));
+}
+#lock:hover {
+  background-image: image(url("./icons/lock-hover.png"));
+}
+
+#logout {
+  background-image: image(url("./icons/logout.png"));
+}
+#logout:hover {
+  background-image: image(url("./icons/logout-hover.png"));
+}
+
+#suspend {
+  background-image: image(url("./icons/sleep.png"));
+}
+#suspend:hover {
+  background-image: image(url("./icons/sleep-hover.png"));
+}
+
+#shutdown {
+  background-image: image(url("./icons/power.png"));
+}
+#shutdown:hover {
+  background-image: image(url("./icons/power-hover.png"));
+}
+
+#reboot {
+  background-image: image(url("./icons/restart.png"));
+}
+#reboot:hover {
+  background-image: image(url("./icons/restart-hover.png"));
+}
+
+#hibernate {
+  background-image: image(url("./icons/hibernate.png"));
+}
+#hibernate:hover {
+  background-image: image(url("./icons/hibernate-hover.png"));
+}

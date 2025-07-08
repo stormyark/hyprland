@@ -1,0 +1,93 @@
+{
+  "vsicons.dontShowNewVersionMessage": true,
+  "bracketPairColorizer.depreciation-notice": false,
+  "window.openFilesInNewWindow": "on",
+  "materialTheme.accent": "Orange",
+  "files.exclude": {
+    "**/.classpath": true,
+    "**/.factorypath": true,
+    "**/.git": false,
+    "**/.project": true,
+    "**/.settings": true
+  },
+  "liveServer.settings.donotShowInfoMsg": true,
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "git.enableSmartCommit": true,
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "github.copilot.editor.enableAutoCompletions": true,
+  "workbench.colorCustomizations": {
+    "editor.foreground": "#ffffff",
+    "activityBar.foreground": "#ffffff",
+    "activityBarBadge.foreground": "#ffffff",
+    "list.activeSelectionForeground": "#ffffff",
+    "statusBar.foreground": "#ffffff",
+    "statusBar.debuggingForeground": "#ffffff",
+    "statusBar.noFolderForeground": "#ffffff",
+    "statusBarItem.remoteForeground": "#ffffff",
+    "menu.selectionForeground": "#ffffff",
+    "button.foreground": "#ffffff",
+    "button.secondaryForeground": "#ffffff",
+    "input.foreground": "#ffffff",
+    "inputOption.activeForeground": "#ffffff",
+    "panelTitle.activeForeground": "#ffffff",
+    "terminalCursor.foreground": "#ffffff",
+    "badge.foreground": "#ffffff",
+    "terminal.ansiWhite": "#ffffff",
+    "terminal.ansiBrightWhite": "#ffffff",
+    "tab.activeForeground": "#ffffff",
+    "tab.hoverForeground": "#ffffff",
+    "breadcrumb.focusForeground": "#ffffff"
+  },
+  "codesnap.backgroundColor": "",
+  "codesnap.realLineNumbers": true,
+  "codesnap.transparentBackground": true,
+  "codesnap.containerPadding": "2em",
+  "codesnap.showLineNumbers": false,
+  "explorer.confirmDragAndDrop": false,
+  "terminal.integrated.fontFamily": "monospace",
+  "editor.codeLensFontFamily": "IBM Plex Mono",
+  "explorer.confirmDelete": false,
+  "remote.SSH.configFile": "C:\\Users\\Noah10\\.ssh\\config",
+  "remote.SSH.remotePlatform": {
+    "stormy": "linux"
+  },
+  "editor.formatOnSave": true,
+  "notebook.formatOnSave.enabled": true,
+  "files.autoSaveWhenNoErrors": true,
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.wordWrap": "on",
+  "git.openRepositoryInParentFolders": "never",
+  "editor.cursorBlinking": "phase",
+  "workbench.startupEditor": "none",
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "animations.Install-Method": "Apc Customize UI++",
+  "apc.imports": [
+    "file://${userHome}/.vscode/extensions/brandonkirbyson.vscode-animations-2.0.7/dist/updateHandler.js"
+  ],
+  "editor.fontFamily": "IBM Plex Mono",
+  "editor.fontSize": 15,
+  "workbench.iconTheme": "material-icon-theme",
+  "github.copilot.nextEditSuggestions.enabled": false,
+  "git.confirmSync": false,
+  "github.copilot.enable": {
+    "*": false,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false,
+    "typescriptreact": false,
+    "javascript": false
+  },
+  "git.autofetch": true
+}
