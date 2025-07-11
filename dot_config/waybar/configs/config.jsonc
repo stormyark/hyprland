@@ -1,0 +1,199 @@
+// -*- mode: jsonc -*-
+{
+  // "layer": "top", // Waybar at top layer
+  // "position": "top", // Waybar position (top|bottom|left|right)
+  "height": 45, // Waybar height (to be removed for auto height)
+  // "width": 1280, // Waybar width
+  "spacing": 5, // Gaps between modules (4px)
+  "margin-top": 2,
+  "margin-bottom": 0,
+  "margin-left": 7,
+  "margin-right": 7,
+  // Choose the order of the modules
+  "modules-left": [
+    "custom/power",
+    "clock",
+    //"custom/weather",
+    //"custom/clipboard",
+    "hyprland/workspaces"
+  ],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    //"mpd",
+    //"idle_inhibitor",
+    //"pulseaudio#microphone",
+    "tray",
+    "network",
+    //"power-profiles-daemon",
+    "cpu",
+    "memory",
+    "temperature",
+    "backlight",
+    //"keyboard-state",
+    //"sway/language",
+    "pulseaudio",
+    "battery"
+    //"battery#bat2",
+    //"clock",
+    //"custom/power"
+  ],
+  "custom/power": {
+    "format": "{}",
+    // "exec": "~/.scripts/tools/expand power",
+    "exec": "echo '{\"text\":\"⏻\",\"tooltip\":\"Power\"}'",
+    "return-type": "json",
+    "on-click": "~/.config/wlogout/launch.sh"
+    /*    
+    "format": "⏻",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "~/.config/wlogout/launch.sh", // Menu file in resources folder
+    "menu-actions": {
+      "shutdown": "shutdown",
+      "reboot": "reboot",
+      "suspend": "systemctl suspend",
+      "hibernate": "systemctl hibernate"
+    }
+    */
+    // "on-click": "pkill wofi || wofi --show drun -n",
+    // "on-click-right": "pkill wofi || wofi --show run -n",
+  },
+  "custom/weather": {
+    //shows the current weather and forecast
+    "tooltip": true,
+    "format": "{}",
+    "interval": 30,
+    "exec": "~/.config/waybar/scripts/waybar-wttr.py",
+    "return-type": "json"
+  },
+  /*
+  "custom/clipboard": {
+    "format": "{}",
+    "exec": "~/.config/scripts/expand_clipboard",
+    "return-type": "json",
+    // Window position is managed in Hyperland config's windowrulev2
+    //tofi
+    //"on-click": "pkill tofi || sleep 0.15 && cliphist list | tofi -c ~/.config/tofi/tofi.clip.conf | cliphist decode | wl-copy",
+    //"on-click-middle": "rm -f ~/.cache/cliphist/db",
+    //"on-click-right": "pkill tofi || sleep 0.15 && cliphist list | tofi -c ~/.config/tofi/tofi.clip.conf | cliphist delete",
+    // Here "-l top_right -x -15 -y 10" doesn't matter as '-n' mode is used
+    //wofi
+    "on-click": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist decode | wl-copy",
+    "on-click-middle": "rm -f ~/.cache/cliphist/db",
+    "on-click-right": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist delete",
+    "escape": true
+  },
+  */
+  "clock": {
+    // "timezone": "America/New_York",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%Y-%m-%d}"
+  },
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "all-outputs": true,
+    "warp-on-scroll": false,
+    "format": "{name}: {icon}",
+    "format-icons": {
+      "1": "",
+      "2": "",
+      //"3": "",
+      //"4": "",
+      //"5": "",
+      "urgent": "",
+      "focused": "",
+      "default": ""
+    }
+  },
+  "hyprland/window": {
+    "format": "{}",
+    /*"rewrite": {
+      "(.*) — Mozilla Firefox": "🌎 $1",
+      "(.*) - fish": "> [$1]"
+    },*/
+    "separate-outputs": true,
+    "max-length": 55
+  },
+  "pulseaudio": {
+    // "scroll-step": 1, // %, can be a float
+    "format": "{volume}% {icon}", // {format_source}
+    "format-bluetooth": "{volume}% {icon}", // {format_source}
+    "format-bluetooth-muted": "", // {format_source}
+    "format-muted": "", // {format_source}
+    "format-source": "{volume}% ",
+    "format-source-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": " ",
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol"
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": "{essid} ({signalStrength}%) ",
+    "format-ethernet": "{ipaddr}/{cidr} ",
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": "Disconnected ⚠",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "on-click-right": "nm-connection-editor"
+  },
+  "cpu": {
+    "format": "{usage}% ",
+    "tooltip": true,
+    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "interval": 2
+  },
+  "memory": {
+    "format": "{}% ",
+    // "format": "{percentage}% <span font='Font Awesome 5 Free'>\uf538</span>",
+    "tooltip": true,
+    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "tooltip-format": "{used}/{total} GiB",
+    "interval": 2
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""],
+    "tooltip": true,
+    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "interval": 2
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{percent}% {icon}",
+    "format-icons": ["", "", "", "", "", "", "", "", ""]
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{capacity}% {icon}",
+    "format-full": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-alt": "{time} {icon}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": ["", "", "", "", ""],
+    "interval": 2
+  },
+  "tray": {
+    // "icon-size": 21,
+    "spacing": 10,
+    "icons": {
+      "blueman": "bluetooth"
+      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
+    }
+  }
+}
