@@ -59,7 +59,6 @@ This setup includes:
 ## 📁 Repository Structure
 
 ```bash
-
 hyprland/
 ├── dot_config/
 │   ├── brave-flags.conf        # Custom launch flags for Brave browser
@@ -117,52 +116,6 @@ hyprland/
 └── README.md
 ```
 
-```bash
-DotFiles/
-├── assets/                          # Wallpapers, helper JSONs, and wallpaper state
-│   ├── Wallpapers/                  # Images used by wallpaper scripts
-│   └── help-bash-descriptions.json  # Prompt help definitions
-│   └── current_wallpaper_inder      # Current wallpaper index for swwww
-│
-├── config/                 # Main config files for all apps (copied to ~/.config)
-│   ├── hypr/               # Hyprland configs (hyprland.conf, hypridle, hyprlock)
-│   ├── waybar/             # Waybar bar and style
-│   ├── kitty/              # Kitty terminal configuration
-│   ├── rofi/               # Rofi launcher styling
-│   ├── starship/           # Starship shell prompt
-│   ├── fastfetch/          # Fastfetch (like neofetch) JSON config
-│   ├── dunst/              # Notification styling
-│   ├── gtk-3.0/, gtk-4.0/  # GTK theming and settings
-│   ├── qt5ct/, qt6ct/      # QT theming
-│   ├── nwg-look/           # Style manager for wayland
-│   ├── cava/, htop/, etc.  # Terminal visualizer and monitor
-│   └── systemd/, wlogout/, xsettingsd/, ollama/, etc.
-│
-├── home/                   # Files copied directly to user home (~)
-│   ├── .bashrc             # Shell config
-│   ├── .bash_profile       # Bash login profile
-│   ├── .gtkrc-2.0          # GTK2 theme fallback
-│   ├── .xinitrc            # Hyprland launch via startx
-│   └── issue               # TTY welcome message
-│
-├── installer/              # Contains the logic for installing and setting up
-│   ├── core/               # Logging, utils, colors, UI helpers
-│   ├── components/         # Scripts for copying configs, assets, etc.
-│   └── install.sh          # Main installer script (entry point)
-│
-├── scripts/                # Executable bash utilities (installed to ~/.local/bin)
-│   ├── ask.sh              # Confirmation prompt
-│   ├── change_wallpaper.sh # Changes wallpaper from the Wallpapers folder
-│   ├── help-bash.sh        # Shows bash command help from JSON
-│   ├── songdetail.sh       # Music now playing info (if supported)
-│   └── wifi-connect.sh     # TUI-based wifi connection script
-│
-├── pkglist.txt             # Complete list of packages to be installed
-├── dotfiles_install.log    # Logs from the installation process
-├── .gitignore
-└── README.md
-```
-
 ---
 
 ## ⚙️ Installation
@@ -176,8 +129,8 @@ DotFiles/
 ### 🚀 2. Clone the Repository
 
 ```bash
-git clone https://github.com/shubhbansal44/DotFiles.git ~/DotFiles
-cd ~/DotFiles/installer
+git clone https://github.com/stormyark/hyprland.git ~/hyprland
+cd ~/hyprland/installer
 ```
 
 ### ▶️ 3. Run the Installer
@@ -254,11 +207,9 @@ Theme settings can be changed using `qt5ct`, `nwg-look`, and `gtk-settings`.
 
 ## ✨ Credits
 
-**Created by:** [Shubh Bansal](https://github.com/shubhbansal44)
+**Created by:** [stormyark](https://github.com/stormyark)
 
-* 🔗 GitHub: [shubhbansal44](https://github.com/shubhbansal44)
-* 🧠 Reddit: [u/Heaurision_Guy432](https://reddit.com/u/Heaurision_Guy432)
-* 🐦 Twitter: [Heaurision Guy](https://twitter.com/ShubhBa88864619)
+* 🔗 Website: [stormyark.de](https://stormyark.de)
 
 ---
 
