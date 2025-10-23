@@ -155,7 +155,8 @@ alias llt='lsd -ahl --tree -I .git'
 alias cat='bat'
 alias df='dysk'
 alias clear='clear;fastfetch'
-alias update='bash .config/scripts/sysmaintenance.sh'
+alias update='bash ~/.config/scripts/sysmaintenance.sh'
+alias unzip='bsdtar -xvf'
 
 # arch
 #alias pacin = 'sudo pacman -S'
