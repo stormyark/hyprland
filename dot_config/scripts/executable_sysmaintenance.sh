@@ -26,7 +26,7 @@ fi
 date=$(date +"%Y-%m-%d")
 
 # Write changes to a logfile
-log_file="$HOME/.config/scripts/sysmaintenancelogs/sysmaintenance_$date.log"
+log_file="$HOME/.config/scripts/sysmaintenance_logs/sysmaintenance_$date.log"
 exec > >(tee -a "$log_file") 2>&1
 
 echo -e "\033[1;36m--- System Maintenance Script ---\033[0m"
@@ -35,27 +35,27 @@ echo "User: $USER"
 
 # Create a backup
 # Check if timeshift is installed
-if ! command -v timeshift &> /dev/null; then
-     read -r -p $'\033[1;34mTimeshift is not installed. Would you like to install it now?(Y/n) \033[0m' install_response
-     if [[ "$install_response" =~ ^[Yy]$ || -z "$install_response" ]]; then
-         echo -e "\033[1;34mInstalling timeshift...\033[0m"
-         sudo pacman -Sy --noconfirm timeshift || {
-             echo -e "\033[1;31mTimeshift installation failed. Script aborted.\033[0m"
-             exit 1
-         }
-     else
-         echo -e "\033[1;31mTimeshift installation skipped. Script aborted.\033[0m"
-         exit 1
-     fi
- fi
-
-echo -e "\033[1;34mCreating a backup using timeshift...\033[0m"
-sudo timeshift --create --comments "sysmaintenance backup ($date)" --tags D || {
-    # Make sure the backup was successful
-    echo -e "\033[1;31mBackup failed. Script aborted.\033[0m"
-    exit 1
-}
-echo -e "\033[1;32mBackup created successfully!\033[0m"
+#if ! command -v timeshift &> /dev/null; then
+#     read -r -p $'\033[1;34mTimeshift is not installed. Would you like to install it now?(Y/n) \033[0m' install_response
+#     if [[ "$install_response" =~ ^[Yy]$ || -z "$install_response" ]]; then
+#         echo -e "\033[1;34mInstalling timeshift...\033[0m"
+#         sudo pacman -Sy --noconfirm timeshift || {
+#             echo -e "\033[1;31mTimeshift installation failed. Script aborted.\033[0m"
+#             exit 1
+#         }
+#     else
+#         echo -e "\033[1;31mTimeshift installation skipped. Script aborted.\033[0m"
+#         exit 1
+#     fi
+# fi
+#
+#echo -e "\033[1;34mCreating a backup using timeshift...\033[0m"
+#sudo timeshift --create --comments "sysmaintenance backup ($date)" --tags D || {
+#    # Make sure the backup was successful
+#    echo -e "\033[1;31mBackup failed. Script aborted.\033[0m"
+#    exit 1
+#}
+#echo -e "\033[1;32mBackup created successfully!\033[0m"
 
 # Keep only the last 10 Timeshift backups
 # echo -e "\033[1;34mPruning Timeshift backups to keep only the latest 10...\033[0m"
@@ -75,6 +75,10 @@ echo -e "\033[1;32mBackup created successfully!\033[0m"
 echo -e "\033[1;34mUpdating system using pacman...\033[0m"
 sudo pacman -Syu --noconfirm
 
+# Update Mirrorlist
+#sudo reflector --country Germany,Switzerland,Austria --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+#sudo pacman -Syyu --noconfirm
+
 # Clear pacman cache
 echo -e "\033[1;34mClearing pacman cache using paccache...\033[0m"
 cache_before=$(du -sh /var/cache/pacman/pkg/ | awk '{print $1}')
@@ -89,7 +93,7 @@ if ! command -v paccache &> /dev/null; then
     fi
 fi
 if command -v paccache &> /dev/null; then
-    paccache -r
+    sudo paccache -r
     cache_after=$(du -sh /var/cache/pacman/pkg/ | awk '{print $1}')
     echo "Pacman cache before: $cache_before"
     echo "Pacman cache after:  $cache_after"
