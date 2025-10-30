@@ -142,6 +142,8 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias vim="nvim"
 
+# install alias dependencies: `sudo pacman -S git fastfetch lsd bat dysk tmux docker`
+
 EDITOR='nano'
 
 alias fucking='sudo'
@@ -166,7 +168,7 @@ alias unzip='bsdtar -xvf'
 alias hypr='nano .config/hypr/hyprland.conf'
 alias paste='wl-paste | bash'
 alias pastefile='echo | wl-paste >>'
-alias copy='cat | wl-copy'
+alias copy='wl-copy <'
 
 # fzf
 alias efzf='nano $(fzf -m --preview="bat --color=always {}")'
