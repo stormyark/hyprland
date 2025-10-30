@@ -1,5 +1,7 @@
 # 🛠️  Dotfiles for Arch Linux
 
+![Showcase](hyprdots_showcase.png)
+
 <h2 align="center">
   <a>
   <br>
