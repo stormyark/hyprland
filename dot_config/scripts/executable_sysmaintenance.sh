@@ -12,6 +12,7 @@
 # Note:
 # Run this script WITHOUT sudo. It uses sudo internally when necessary.
 #
+# Website: stormyark.de
 
 set -euo pipefail
 
@@ -25,8 +26,41 @@ fi
 # Get current date in YYYY-MM-DD format
 date=$(date +"%Y-%m-%d")
 
+# Defaults / options
+AUTO_YES=0
+NO_REBOOT=0
+SKIP_TIMESHIFT=0
+KEEP_PACCACHE=3
+
+show_help() {
+    cat <<EOF
+Usage: $0 [options]
+Options:
+  -y, --yes           Assume yes for prompts
+  --no-reboot         Don't offer to reboot at the end
+  --no-timeshift      Skip creating a Timeshift backup
+  -k N, --keep-cache N  Keep last N pacman package versions (default: 3)
+  -h, --help          Show this help
+EOF
+    exit 0
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -y|--yes) AUTO_YES=1; shift;;
+        --no-reboot) NO_REBOOT=1; shift;;
+        --no-timeshift) SKIP_TIMESHIFT=1; shift;;
+        -k|--keep-cache) KEEP_PACCACHE="$2"; shift 2;;
+        -h|--help) show_help;;
+        --) shift; break;;
+        *) echo "Unknown option: $1"; show_help;;
+    esac
+done
+
 # Write changes to a logfile
-log_file="$HOME/.config/scripts/sysmaintenance_logs/sysmaintenance_$date.log"
+log_dir="$HOME/.config/scripts/sysmaintenance_logs"
+mkdir -p "$log_dir"
+log_file="$log_dir/sysmaintenance_$date.log"
 exec > >(tee -a "$log_file") 2>&1
 
 echo -e "\033[1;36m--- System Maintenance Script ---\033[0m"
@@ -72,6 +106,12 @@ echo "User: $USER"
 # fi
 
 # pacman -Syu
+echo -e "\033[1;34mRefreshing sudo credentials...\033[0m"
+sudo -v || {
+    echo -e "\033[1;31mFailed to obtain sudo credentials. Aborting.\033[0m"
+    exit 1
+}
+
 echo -e "\033[1;34mUpdating system using pacman...\033[0m"
 sudo pacman -Syu --noconfirm
 
@@ -80,43 +120,54 @@ sudo pacman -Syu --noconfirm
 #sudo pacman -Syyu --noconfirm
 
 # Clear pacman cache
-echo -e "\033[1;34mClearing pacman cache using paccache...\033[0m"
-cache_before=$(du -sh /var/cache/pacman/pkg/ | awk '{print $1}')
-# Check if paccache is installed
+echo -e "\033[1;34mClearing pacman cache using paccache (keeping last $KEEP_PACCACHE)...\033[0m"
+cache_before=$(du -sh /var/cache/pacman/pkg/ 2>/dev/null | awk '{print $1}' || echo "0")
 if ! command -v paccache &> /dev/null; then
-    read -r -p $'\033[1;34mpaccache is not installed. Do you want to install it? (Y/n) \033[0m' response
-    if [[ "$response" =~ ^[Yy]$ || -z "$response" ]]; then
-        echo -e "\033[1;34mInstalling paccache...\033[0m"
-        sudo pacman -Sy pacman-contrib
-    else
-        echo -e "\033[1;31mInstallation skipped.\033[0m"
-    fi
+    echo -e "\033[1;33mpaccache not available; installing pacman-contrib...\033[0m"
+    sudo pacman -Sy --noconfirm pacman-contrib || echo -e "\033[1;33mCould not install pacman-contrib, skipping cache cleanup.\033[0m"
 fi
 if command -v paccache &> /dev/null; then
-    sudo paccache -r
-    cache_after=$(du -sh /var/cache/pacman/pkg/ | awk '{print $1}')
+    sudo paccache -rk"$KEEP_PACCACHE"
+    cache_after=$(du -sh /var/cache/pacman/pkg/ 2>/dev/null | awk '{print $1}' || echo "0")
     echo "Pacman cache before: $cache_before"
     echo "Pacman cache after:  $cache_after"
+else
+    echo -e "\033[1;33mpaccache is still unavailable; skipping cache prune.\033[0m"
 fi
 
 # Remove Orphans (unneeded dependencies)
-orphans=$(pacman -Qdtq)
-if [ -n "$orphans" ]; then # Check if there are any orphans
-    echo -e "\033[1;34mRemoving listed orphan packages:\033[0m"
+orphans=$(pacman -Qdtq 2>/dev/null || true)
+if [[ -n "$orphans" ]]; then
+    echo -e "\033[1;34mRemoving orphan packages:\033[0m"
     echo "$orphans"
-    sudo pacman -Rns "$orphans" --noconfirm
+    sudo pacman -Rns --noconfirm $orphans || echo -e "\033[1;33mFailed to remove some orphans (continuing).\033[0m"
 else
-    echo -e "\033[1;31mNo orphans found.\033[0m"
+    echo -e "\033[1;32mNo orphan packages found.\033[0m"
 fi
 
 # Update AUR packages
-read -r -p $'\033[1;34mUpdate AUR Packages? (Y/n) \033[0m' reply
-if [[ "$reply" =~ ^[Yy]$ || -z "$reply" ]]; then
-    if command -v yay &> /dev/null; then
-        yay -Syu --noconfirm
+if (( AUTO_YES == 1 )); then
+    aur_update_choice=1
+else
+    read -r -p $'\033[1;34mUpdate AUR packages? (Y/n) \033[0m' reply
+    if [[ "$reply" =~ ^[Yy]$ || -z "$reply" ]]; then
+        aur_update_choice=1
     else
-        echo -e "\033[1;31m'yay' not found, skipping AUR update.\033[0m"
+        aur_update_choice=0
     fi
+fi
+if (( aur_update_choice == 1 )); then
+    if command -v yay &> /dev/null; then
+        yay -Syu --noconfirm || echo -e "\033[1;33m'yay' update failed (continuing).\033[0m"
+    elif command -v paru &> /dev/null; then
+        paru -Syu --noconfirm || echo -e "\033[1;33m'paru' update failed (continuing).\033[0m"
+    elif command -v pamac &> /dev/null; then
+        pamac upgrade --no-confirm || echo -e "\033[1;33mpamac update failed (continuing).\033[0m"
+    else
+        echo -e "\033[1;33mNo AUR helper found (yay/paru/pamac); skipping AUR updates.\033[0m"
+    fi
+else
+    echo -e "\033[1;33mSkipping AUR updates.\033[0m"
 fi
 
 : '
@@ -126,35 +177,67 @@ fi
 #echo "Spaced saved: $home_cache_used"
 '
 
-echo -e "\033[1;34mClearing system logs...\033[0m"
-journal_size_before=$(journalctl --disk-usage | awk '{print $4$5}' | numfmt --from=iec) # Get initial journal size
-# awk '{print $4, $5}' extracts the size and the unit (e.g., 512.3 M).
-sudo journalctl --vacuum-time=7d # Clear logs older than 7 days
-journal_size_after=$(journalctl --disk-usage | awk '{print $4$5}' | numfmt --from=iec) #Get new journal size
-
-space_freed=$((journal_size_before - journal_size_after))
-echo -e "\033[1;32mJournal space saved:\033[0m $(numfmt --to=iec $space_freed)"
+echo -e "\033[1;34mClearing system journal older than 7 days...\033[0m"
+journal_size_before_bytes=0
+journal_size_after_bytes=0
+disk_usage_line=$(journalctl --disk-usage 2>/dev/null || true)
+if [[ -n "$disk_usage_line" ]]; then
+    # Extract the human-readable size (e.g. 1.3G)
+    before_hr=$(echo "$disk_usage_line" | sed -E 's/.*take up ([0-9\.]+[KMGTPE]?)( in .*| in the .*).*/\1/')
+    if [[ -n "$before_hr" ]]; then
+        journal_size_before_bytes=$(numfmt --from=iec "$before_hr" 2>/dev/null || echo 0)
+    fi
+fi
+sudo journalctl --vacuum-time=7d || echo -e "\033[1;33mjournalctl vacuum had an issue (continuing).\033[0m"
+disk_usage_line_after=$(journalctl --disk-usage 2>/dev/null || true)
+if [[ -n "$disk_usage_line_after" ]]; then
+    after_hr=$(echo "$disk_usage_line_after" | sed -E 's/.*take up ([0-9\.]+[KMGTPE]?)( in .*| in the .*).*/\1/')
+    if [[ -n "$after_hr" ]]; then
+        journal_size_after_bytes=$(numfmt --from=iec "$after_hr" 2>/dev/null || echo 0)
+    fi
+fi
+space_freed_bytes=$((journal_size_before_bytes - journal_size_after_bytes))
+if (( space_freed_bytes > 0 )); then
+    echo -e "\033[1;32mJournal space saved:\033[0m $(numfmt --to=iec $space_freed_bytes)"
+else
+    echo -e "\033[1;32mNo journal space freed (or unable to calculate).\033[0m"
+fi
 
 # Ask the user if they want to reboot
-read -r -p $'\033[1;34mDo you want to reboot the system? (Y/n) \033[0m' reboot_response
-if [[ "$reboot_response" =~ ^[Yy]$ || -z "$reboot_response" ]]; then
+if (( NO_REBOOT == 1 )); then
+    echo -e "\033[1;33mReboot suppressed by option.\033[0m"
+    reboot_wanted=0
+else
+    if (( AUTO_YES == 1 )); then
+        reboot_wanted=1
+    else
+        read -r -p $'\033[1;34mDo you want to reboot the system now? (Y/n) \033[0m' reboot_response
+        if [[ "$reboot_response" =~ ^[Yy]$ || -z "$reboot_response" ]]; then
+            reboot_wanted=1
+        else
+            reboot_wanted=0
+        fi
+    fi
+fi
+if (( reboot_wanted == 1 )); then
     echo -e "\033[1;32mRebooting now...\033[0m"
     sudo reboot
 else
-    echo -e "\033[1;31mReboot skipped, please reboot later.\033[0m"
-    notify-send "Reboot is recommended."
+    echo -e "\033[1;31mReboot skipped; please reboot later if needed.\033[0m"
+    if command -v notify-send &> /dev/null; then
+        notify-send "System maintenance completed — reboot recommended."
+    fi
 fi
 
 # --- Summary ---
 echo -e "\n\033[1;36m--- Maintenance Summary ---\033[0m"
-echo "Backup created: Yes"
-echo "Old Timeshift backups pruned: Yes"
+echo "Timeshift backup: $(( SKIP_TIMESHIFT == 1 ))"
 echo "System updated: Yes"
-echo "Pacman cache cleaned: Yes"
-echo "Orphan packages removed: $([[ -n "$orphans" ]] && echo Yes || echo No)"
-echo "AUR updated: $([[ "$reply" =~ ^[Yy]$ || -z "$reply" ]] && command -v yay &> /dev/null && echo Yes || echo No)"
+echo "Pacman cache kept last: $KEEP_PACCACHE"
+echo "Orphans removed: $([[ -n "$orphans" ]] && echo Yes || echo No)"
+echo "AUR updated: $([[ $aur_update_choice -eq 1 ]] && echo Yes || echo No)"
 echo "System logs cleaned: Yes"
-echo "Reboot: $([[ "$reboot_response" =~ ^[Yy]$ || -z "$reboot_response" ]] && echo Yes || echo No)"
+echo "Reboot: $([[ $reboot_wanted -eq 1 ]] && echo Yes || echo No)"
 
 # Reset color
 echo -e "\033[0m"
@@ -184,3 +267,6 @@ WantedBy=timers.target
 
 # Then enable with:
 # systemctl --user enable --
+
+# End example
+'
