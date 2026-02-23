@@ -13,7 +13,7 @@
     "logo": {
         "source": "arch_small",
         "padding": {
-            "top": 1,
+            "top": 0,
             "left": 2
         }
     },
@@ -21,7 +21,6 @@
         "separator": "  "
     },
     "modules": [
-        "break",
         {
             "type": "title",
             "keyColor": "34"
@@ -73,8 +72,7 @@
             "type": "memory",
             "key": "󰍛 memory",
             "keyColor": "34"
-        },
-        "break"
+        }
     ]
 }
 

@@ -170,11 +170,11 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias vim="nvim"
 
-# install alias dependencies: `sudo pacman -S git fastfetch lsd bat tmux`
+# install alias dependencies: `sudo pacman -S git fastfetch lsd bat bc`
 
 EDITOR='nano'
 
-alias fucking='sudo'
+alias fuck='sudo'
 alias cd..='cd ..'
 alias ..='cd ..'
 alias ~='cd ~'
@@ -183,15 +183,17 @@ alias ls='lsd --group-dirs first'
 alias lst='lsd -a --tree -I .git'
 alias llt='lsd -ahl --tree -I .git'
 alias cat='bat'
+alias calc='qalc'
 alias ff='fastfetch'
 # alias df='dysk'
-alias clear='clear && fastfetch'
+alias clear='clear && fastfetch && cd ~'
 alias update='bash ~/.config/scripts/sysmaintenance.sh'
 alias unzip='bsdtar -xvf'
+alias ncdu='ncdu' #Check Diskspace
 
 # arch
-#alias pacin = 'sudo pacman -S'
-#alias pacreps = 'pacman -Ss'
+#alias i = 'sudo pacman -S'
+#alias s = 'pacman -Ss'
 
 # hyprland
 alias hypr='nano ~/.config/hypr/hyprland.conf'
@@ -223,6 +225,12 @@ alias gs='git status'
 # development
 alias gc='g++ -o o'
 alias py='python3'
+
+# Get the error messages from journalctl
+alias jctl='journalctl -p 3 -xb'
+
+# Activate Emacs keybindings to make Arrow key work
+bindkey -e
 
 # Set-up FZF key bindings (CTRL R for fuzzy history finder)
 source <(fzf --zsh)

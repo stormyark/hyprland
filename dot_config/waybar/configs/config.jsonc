@@ -1,7 +1,15 @@
 // -*- mode: jsonc -*-
+//        /\             _
+//       /  \        ___| |_ ___  _ __ _ __ ___  _   _
+//      /    \      / __| __/ _ \| '__| '_ ` _ \| | | |
+//     /      \     \__ \ || (_) | |  | | | | | | |_| |
+//    /   ,,   \    |___/\__\___/|_|  |_| |_| |_|\___ |
+//   /   |  |   \                                |___/
+//  /_-''    ''-_\  stormyark.de
+
 {
-  // "layer": "top", // Waybar at top layer
-  // "position": "top", // Waybar position (top|bottom|left|right)
+  //"layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
   "height": 45, // Waybar height (to be removed for auto height)
   // "width": 1280, // Waybar width
   "spacing": 5, // Gaps between modules (4px)
@@ -9,6 +17,7 @@
   "margin-bottom": 0,
   "margin-left": 7,
   "margin-right": 7,
+  "reload_style_on_change": true,
   // Choose the order of the modules
   "modules-left": [
     "custom/power",
@@ -23,6 +32,7 @@
     //"idle_inhibitor",
     //"pulseaudio#microphone",
     "tray",
+    "custom/swaync",
     "network",
     //"power-profiles-daemon",
     "cpu",
@@ -38,12 +48,16 @@
     //"custom/power"
   ],
   "custom/power": {
-    "format": "{}",
+    "format": "⏻",
+    //"format": "{}",
     // "exec": "~/.scripts/tools/expand power",
     "exec": "echo '{\"text\":\"⏻\",\"tooltip\":\"Power\"}'",
     "return-type": "json",
-    "on-click": "~/.config/wlogout/launch.sh"
-    /*    
+    "on-click": "~/.config/hypr/scripts/wlogout.sh",
+    //"on-click-right": "~/.config/hypr/scripts/ChangeBlur.sh",
+    "interval": 86400, // once every day
+    "tooltip": true
+    /*
     "format": "⏻",
     "tooltip": false,
     "menu": "on-click",
@@ -58,13 +72,18 @@
     // "on-click": "pkill wofi || wofi --show drun -n",
     // "on-click-right": "pkill wofi || wofi --show run -n",
   },
+  // NOTE:! This is only for Arch and Arch Based Distros  depend: \
   "custom/weather": {
     //shows the current weather and forecast
-    "tooltip": true,
     "format": "{}",
-    "interval": 30,
-    "exec": "~/.config/waybar/scripts/waybar-wttr.py",
-    "return-type": "json"
+    "format-alt": "{alt}: {}",
+    "format-alt-click": "click",
+    "interval": 3600,
+    "return-type": "json",
+    //"exec": "~/.config/hypr/UserScripts/Weather.sh",
+    "exec": "~/.config/hypr/scripts/Weather.py",
+    "exec-if": "ping wttr.in -c1",
+    "tooltip": true,
   },
   /*
   "custom/clipboard": {
@@ -87,72 +106,118 @@
   "clock": {
     // "timezone": "America/New_York",
     "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-    "format-alt": "{:%Y-%m-%d}"
+    "format-alt": "{:%d.%m.%Y}"
   },
+
   "hyprland/workspaces": {
     "disable-scroll": true,
-    "all-outputs": true,
     "warp-on-scroll": false,
+    "all-outputs": false,
+    //"format": "{name}: {windows}",
     "format": "{name}: {icon}",
+    "show-special": true,
+    "special-visible-only": true,
+    "window-rewrite-default": "",
     "format-icons": {
       "1": "",
-      "2": "",
+      "2": "󰈹",
       //"3": "",
       //"4": "",
       //"5": "",
-      "urgent": "",
+      //"urgent": "",
       "focused": "",
       "default": ""
-    }
+    },
+    "window-rewrite": {
+      "class<firefox>": "󰈹",
+      "class<zen browser>": "󰈹",
+      "sterminal": "",
+      "kitty": "󰄛",
+      "class<kitty> title<vim.*>": "",
+      "class<UnrealEditor-?.*> title<.+>": "<span font_size='10pt'>󰦱</span>",
+      "class<UnrealEditor-?.*> title<>": "",
+      "class<io.github.achetagames.epic_asset_manager>": "",
+      "obsidian": "󰠮",
+      "code": "󰨞",
+      "title<btop>": "󰊚",
+      "KeePassXC": "",
+      "Rofi": "",
+      "music": "",
+      "nautilus": "",
+      "Qalculate!": "",
+      "com.stremio.stremio": "󱜅",
+      "steam": "",
+      "discord": " ",
+      "heroic": "",
+      "hl2_linux": "",
+      "Turtle-wow": "",
+      "Minecraft Launcher": "",
+      "class<(Minecraft\\s\\d\\.\\d+\\.\\d+)>": "",
+      "class<(steam_proton)>": "",
+      "class<(steam_app_.*)>": ""
+      },
   },
   "hyprland/window": {
-    "format": "{}",
-    /*"rewrite": {
-      "(.*) — Mozilla Firefox": "🌎 $1",
-      "(.*) - fish": "> [$1]"
-    },*/
-    "separate-outputs": true,
-    "max-length": 55
+    "format": "{title}",
+    "separate-outputs": false,
+    "max-length": 50,
+    "rewrite": {
+      "^.*( — Zen Browser|Zen Browser)$": "󰈹 Zen Browser",
+      "^.*( — Visual Studio Code|Visual Studio Code)$": "󰨞 Vs Code",
+      //"^.*v( .*|$)": " Neovim",
+      "^.*~$": "󰄛 Kitty",
+      //"(.*) ": " Empty",
+      "^.*pdf( .*|$)": "$1"
+      //"^.*(- Mousepad)$" :" $1"
+    },
   },
   "pulseaudio": {
-    // "scroll-step": 1, // %, can be a float
-    "format": "{volume}% {icon}", // {format_source}
-    "format-bluetooth": "{volume}% {icon}", // {format_source}
-    "format-bluetooth-muted": "", // {format_source}
-    "format-muted": "", // {format_source}
-    "format-source": "{volume}% ",
-    "format-source-muted": "",
-    "format-icons": {
-      "headphone": "",
-      "headset": "",
+      // "scroll-step": 1, // %, can be a float
+      "format": "{volume}% {icon}", // {format_source}
+      "format-bluetooth": "{icon} 󰂰 {volume}", // {format_source}
+      //"format-bluetooth-muted": "", // {format_source}
+      "format-muted": "󰖁", // {format_source}
+      "format-source": "{volume}% ",
+      "format-source-muted": "",
+      "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
       "phone": "",
       "portable": "",
-      "car": " ",
-      "default": ["", "", ""]
+      "car": "",
+      "default": ["", "", "󰕾", ""]
     },
-    "on-click": "pavucontrol"
+    "on-click": "pavucontrol -t 3",
+    "scroll-step": 5.0,
+	//"on-click": "~/.config/hypr/scripts/Volume.sh --toggle",
+	//"on-scroll-up": "~/.config/hypr/scripts/Volume.sh --inc",
+	//"on-scroll-down": "~/.config/hypr/scripts/Volume.sh --dec",
+	"tooltip-format": "{icon} {desc} | {volume}%",
+	"smooth-scrolling-threshold": 1,
   },
   "network": {
     // "interface": "wlp2*", // (Optional) To force the use of this interface
-    "format-wifi": "{essid} ({signalStrength}%) ",
-    "format-ethernet": "{ipaddr}/{cidr} ",
-    "tooltip-format": "{ifname} via {gwaddr} ",
-    "format-linked": "{ifname} (No IP) ",
-    "format-disconnected": "Disconnected ⚠",
+    "format-wifi": "{signalStrength}% 󰤨",
+    "format-ethernet": "{ipaddr}/{cidr} 󰈁",
+    "tooltip-format": "{essid}",
+    "format-linked": "{ifname} (No IP) 󰈁",
+    "format-disconnected": "Disconnected 󰖪",
     "format-alt": "{ifname}: {ipaddr}/{cidr}",
-    "on-click-right": "nm-connection-editor"
+    "on-click-right": "nm-connection-editor",
+    //"max-length": 14
   },
   "cpu": {
     "format": "{usage}% ",
     "tooltip": true,
-    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "on-click": "kitty sh -c 'btop'",
     "interval": 2
   },
   "memory": {
     "format": "{}% ",
     // "format": "{percentage}% <span font='Font Awesome 5 Free'>\uf538</span>",
     "tooltip": true,
-    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "on-click": "kitty sh -c 'btop'",
     "tooltip-format": "{used}/{total} GiB",
     "interval": 2
   },
@@ -164,13 +229,21 @@
     "format": "{temperatureC}°C {icon}",
     "format-icons": ["", "", ""],
     "tooltip": true,
-    "on-click": "kitty --start-as=fullscreen --title all_is_kitty sh -c 'btop'",
+    "on-click": "kitty sh -c 'btop'",
     "interval": 2
   },
   "backlight": {
     // "device": "acpi_video1",
     "format": "{percent}% {icon}",
-    "format-icons": ["", "", "", "", "", "", "", "", ""]
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "scroll-step": 5.0
+  },
+  "custom/swaync": {
+    "exec": "bash ~/.config/hypr/scripts/waybar/waybar-swaync.sh",
+    "interval": 1,
+    "tooltip": false,
+    "format": "{} ",
+    "on-click": "swaync-client -t"
   },
   "battery": {
     "states": {
@@ -180,20 +253,16 @@
     },
     "format": "{capacity}% {icon}",
     "format-full": "{capacity}% {icon}",
-    "format-charging": "{capacity}% ",
+    "format-charging": "{capacity}% ",
     "format-plugged": "{capacity}% ",
     "format-alt": "{time} {icon}",
     // "format-good": "", // An empty format will hide the module
     // "format-full": "",
-    "format-icons": ["", "", "", "", ""],
+    "format-icons": [" ", " ", " ", " ", " "],
     "interval": 2
   },
   "tray": {
-    // "icon-size": 21,
+    //"icon-size": 21,
     "spacing": 10,
-    "icons": {
-      "blueman": "bluetooth"
-      //   "TelegramDesktop": "$HOME/.local/share/icons/hicolor/16x16/apps/telegram.png"
-    }
   }
 }

@@ -113,11 +113,46 @@ sudo -v || {
 }
 
 echo -e "\033[1;34mUpdating system using pacman...\033[0m"
-sudo pacman -Syu --noconfirm
+#sudo pacman -Syu --noconfirm
+
+# Measure how long pacman actually takes and run it with line-buffered output
+# (avoids buffering when stdout is piped to tee) and disable the fancy progress
+# bar which can cause non-TTY delays. If `stdbuf` is not available fall back.
+start_ts=$(date +%s)
+if command -v stdbuf &> /dev/null; then
+    stdbuf -oL sudo pacman -Syu --noconfirm || {
+        echo -e "\033[1;33mpacman returned non-zero (continuing).\033[0m"
+    }
+else
+    sudo pacman -Syu --noconfirm || {
+        echo -e "\033[1;33mpacman returned non-zero (continuing).\033[0m"
+    }
+fi
+end_ts=$(date +%s)
+echo "pacman wall time: $((end_ts - start_ts))s"
 
 # Update Mirrorlist
-#sudo reflector --country Germany,Switzerland,Austria --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
-#sudo pacman -Syyu --noconfirm
+mirrorlist_update_choice=0
+if (( AUTO_YES == 1 )); then
+    mirrorlist_update_choice=1
+else
+    read -r -p $'\033[1;34mUpdate mirrorlist? (Y/n) \033[0m' reply
+    if [[ "$reply" =~ ^[Yy]$ || -z "$reply" ]]; then
+        mirrorlist_update_choice=1
+    else
+        mirrorlist_update_choice=0
+    fi
+fi
+if (( mirrorlist_update_choice == 1 )); then
+    if command -v reflector &> /dev/null; then
+        sudo reflector --country Germany,Switzerland,Austria --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist || echo -e "\033[1;33mMirrorlist update failed (continuing).\033[0m"
+        sudo pacman -Syyu --noconfirm || echo -e "\033[1;33mpacman returned non-zero (continuing).\033[0m"
+    else
+        echo -e "\033[1;33mreflector not found; skipping mirrorlist update.\033[0m"
+    fi
+else
+    echo -e "\033[1;33mSkipping mirrorlist update.\033[0m"
+fi
 
 # Clear pacman cache
 echo -e "\033[1;34mClearing pacman cache using paccache (keeping last $KEEP_PACCACHE)...\033[0m"
