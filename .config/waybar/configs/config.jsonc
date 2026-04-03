@@ -1,0 +1,268 @@
+// -*- mode: jsonc -*-
+//        /\             _
+//       /  \        ___| |_ ___  _ __ _ __ ___  _   _
+//      /    \      / __| __/ _ \| '__| '_ ` _ \| | | |
+//     /      \     \__ \ || (_) | |  | | | | | | |_| |
+//    /   ,,   \    |___/\__\___/|_|  |_| |_| |_|\___ |
+//   /   |  |   \                                |___/
+//  /_-''    ''-_\  stormyark.de
+
+{
+  //"layer": "top", // Waybar at top layer
+  "position": "top", // Waybar position (top|bottom|left|right)
+  "height": 45, // Waybar height (to be removed for auto height)
+  // "width": 1280, // Waybar width
+  "spacing": 5, // Gaps between modules (4px)
+  "margin-top": 5,
+  "margin-bottom": 0,
+  "margin-left": 7,
+  "margin-right": 7,
+  "reload_style_on_change": true,
+  // Choose the order of the modules
+  "modules-left": [
+    "custom/power",
+    "clock",
+    //"custom/weather",
+    //"custom/clipboard",
+    "hyprland/workspaces"
+  ],
+  "modules-center": ["hyprland/window"],
+  "modules-right": [
+    //"mpd",
+    //"idle_inhibitor",
+    //"pulseaudio#microphone",
+    "tray",
+    "network",
+    //"power-profiles-daemon",
+    "cpu",
+    "memory",
+    "temperature",
+    "backlight",
+    //"keyboard-state",
+    //"sway/language",
+    "pulseaudio",
+    "battery",
+    "custom/swaync"
+    //"battery#bat2",
+    //"clock",
+    //"custom/power"
+  ],
+  "custom/power": {
+    "format": "⏻",
+    //"format": "{}",
+    // "exec": "~/.scripts/tools/expand power",
+    "exec": "echo '{\"text\":\"⏻\",\"tooltip\":\"Power\"}'",
+    "return-type": "json",
+    "on-click": "~/.config/hypr/scripts/wlogout.sh",
+    //"on-click-right": "~/.config/hypr/scripts/ChangeBlur.sh",
+    "interval": 86400, // once every day
+    "tooltip": true
+    /*
+    "format": "⏻",
+    "tooltip": false,
+    "menu": "on-click",
+    "menu-file": "~/.config/wlogout/launch.sh", // Menu file in resources folder
+    "menu-actions": {
+      "shutdown": "shutdown",
+      "reboot": "reboot",
+      "suspend": "systemctl suspend",
+      "hibernate": "systemctl hibernate"
+    }
+    */
+    // "on-click": "pkill wofi || wofi --show drun -n",
+    // "on-click-right": "pkill wofi || wofi --show run -n",
+  },
+  // NOTE:! This is only for Arch and Arch Based Distros  depend: \
+  "custom/weather": {
+    //shows the current weather and forecast
+    "format": "{}",
+    "format-alt": "{alt}: {}",
+    "format-alt-click": "click",
+    "interval": 3600,
+    "return-type": "json",
+    //"exec": "~/.config/hypr/UserScripts/Weather.sh",
+    "exec": "~/.config/hypr/scripts/Weather.py",
+    "exec-if": "ping wttr.in -c1",
+    "tooltip": true,
+  },
+  /*
+  "custom/clipboard": {
+    "format": "{}",
+    "exec": "~/.config/scripts/expand_clipboard",
+    "return-type": "json",
+    // Window position is managed in Hyperland config's windowrulev2
+    //tofi
+    //"on-click": "pkill tofi || sleep 0.15 && cliphist list | tofi -c ~/.config/tofi/tofi.clip.conf | cliphist decode | wl-copy",
+    //"on-click-middle": "rm -f ~/.cache/cliphist/db",
+    //"on-click-right": "pkill tofi || sleep 0.15 && cliphist list | tofi -c ~/.config/tofi/tofi.clip.conf | cliphist delete",
+    // Here "-l top_right -x -15 -y 10" doesn't matter as '-n' mode is used
+    //wofi
+    "on-click": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist decode | wl-copy",
+    "on-click-middle": "rm -f ~/.cache/cliphist/db",
+    "on-click-right": "pkill wofi || cliphist list | wofi --dmenu -p clippick -l top_right -x -15 -y 10 -n | cliphist delete",
+    "escape": true
+  },
+  */
+  "clock": {
+    // "timezone": "America/New_York",
+    "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
+    "format-alt": "{:%d.%m.%Y}"
+  },
+
+  "hyprland/workspaces": {
+    "disable-scroll": true,
+    "warp-on-scroll": false,
+    "all-outputs": false,
+    //"format": "{name}: {windows}",
+    "format": "{name}: {icon}",
+    "show-special": true,
+    "special-visible-only": true,
+    "window-rewrite-default": "",
+    "format-icons": {
+      "1": "",
+      "2": "󰈹",
+      //"3": "",
+      //"4": "",
+      //"5": "",
+      //"urgent": "",
+      "focused": "",
+      "default": ""
+    },
+    "window-rewrite": {
+      "class<firefox>": "󰈹",
+      "class<zen browser>": "󰈹",
+      "sterminal": "",
+      "kitty": "󰄛",
+      "class<kitty> title<vim.*>": "",
+      "class<UnrealEditor-?.*> title<.+>": "<span font_size='10pt'>󰦱</span>",
+      "class<UnrealEditor-?.*> title<>": "",
+      "class<io.github.achetagames.epic_asset_manager>": "",
+      "obsidian": "󰠮",
+      "code": "󰨞",
+      "title<btop>": "󰊚",
+      "KeePassXC": "",
+      "Rofi": "",
+      "music": "",
+      "nautilus": "",
+      "Qalculate!": "",
+      "com.stremio.stremio": "󱜅",
+      "steam": "",
+      "discord": " ",
+      "heroic": "",
+      "hl2_linux": "",
+      "Turtle-wow": "",
+      "Minecraft Launcher": "",
+      "class<(Minecraft\\s\\d\\.\\d+\\.\\d+)>": "",
+      "class<(steam_proton)>": "",
+      "class<(steam_app_.*)>": ""
+      },
+  },
+  "hyprland/window": {
+    "format": "{title}",
+    "separate-outputs": false,
+    "max-length": 50,
+    "rewrite": {
+      "^.*( — Zen Browser|Zen Browser)$": "󰈹 Zen Browser",
+      "^.*( — Visual Studio Code|Visual Studio Code)$": "󰨞 Vs Code",
+      //"^.*v( .*|$)": " Neovim",
+      "^.*~$": "󰄛 Kitty",
+      //"(.*) ": " Empty",
+      "^.*pdf( .*|$)": "$1"
+      //"^.*(- Mousepad)$" :" $1"
+    },
+  },
+  "pulseaudio": {
+      // "scroll-step": 1, // %, can be a float
+      "format": "{volume}% {icon}", // {format_source}
+      "format-bluetooth": "{icon} 󰂰 {volume}", // {format_source}
+      //"format-bluetooth-muted": "", // {format_source}
+      "format-muted": "󰖁", // {format_source}
+      "format-source": "{volume}% ",
+      "format-source-muted": "",
+      "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", "󰕾", ""]
+    },
+    "on-click": "pavucontrol -t 3",
+    "scroll-step": 5.0,
+	//"on-click": "~/.config/hypr/scripts/Volume.sh --toggle",
+	//"on-scroll-up": "~/.config/hypr/scripts/Volume.sh --inc",
+	//"on-scroll-down": "~/.config/hypr/scripts/Volume.sh --dec",
+	"tooltip-format": "{icon} {desc} | {volume}%",
+	"smooth-scrolling-threshold": 1,
+  },
+  "network": {
+    // "interface": "wlp2*", // (Optional) To force the use of this interface
+    "format-wifi": "{signalStrength}% 󰤨",
+    "format-ethernet": "{ipaddr}/{cidr} 󰈁",
+    "tooltip-format": "{essid}",
+    "format-linked": "{ifname} (No IP) 󰈁",
+    "format-disconnected": "Disconnected 󰖪",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}",
+    "on-click-right": "nm-connection-editor",
+    //"max-length": 14
+  },
+  "cpu": {
+    "format": "{usage}% ",
+    "tooltip": true,
+    "on-click": "kitty sh -c 'btop'",
+    "interval": 2
+  },
+  "memory": {
+    "format": "{}% ",
+    // "format": "{percentage}% <span font='Font Awesome 5 Free'>\uf538</span>",
+    "tooltip": true,
+    "on-click": "kitty sh -c 'btop'",
+    "tooltip-format": "{used}/{total} GiB",
+    "interval": 2
+  },
+  "temperature": {
+    // "thermal-zone": 2,
+    // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
+    "critical-threshold": 80,
+    // "format-critical": "{temperatureC}°C {icon}",
+    "format": "{temperatureC}°C {icon}",
+    "format-icons": ["", "", ""],
+    "tooltip": true,
+    "on-click": "kitty sh -c 'btop'",
+    "interval": 2
+  },
+  "backlight": {
+    // "device": "acpi_video1",
+    "format": "{percent}% {icon}",
+    "format-icons": ["", "", "", "", "", "", "", "", ""],
+    "scroll-step": 5.0
+  },
+  "custom/swaync": {
+    "exec": "bash ~/.config/hypr/scripts/waybar/waybar-swaync.sh",
+    "interval": 1,
+    "tooltip": false,
+    "format": "{} ",
+    "on-click": "swaync-client -t"
+  },
+  "battery": {
+    "states": {
+      "good": 95,
+      //"warning": 30,
+      "critical": 30
+    },
+    "format": "{capacity}% {icon}",
+    "format-full": "{capacity}% {icon}",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-alt": "{time} {icon}",
+    // "format-good": "", // An empty format will hide the module
+    // "format-full": "",
+    "format-icons": [" ", " ", " ", " ", " "],
+    "interval": 2
+  },
+  "tray": {
+    //"icon-size": 21,
+    "spacing": 10,
+  }
+}

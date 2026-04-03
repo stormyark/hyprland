@@ -1,0 +1,139 @@
+/* Main Config (wallpaper) */
+
+@import "~/.config/rofi/config.rasi"  
+
+/* ---- Configuration ---- */ 
+configuration {
+    modi: "drun,run,window,emoji";
+    case-sensitive: false;
+    cycle: true;
+    filter: "";
+    scroll-method: 0;
+    normalize-match: true;
+    show-icons: true;
+    icon-theme: "Papirus";
+    steal-focus: false;
+    font: "IBM Plex Mono 12";
+    dynamic:             false;
+    fixed-num-lines:     true;
+    display-drun:        " ";
+    drun-prompt:         " ";
+}
+
+* {
+    font: "IBM Plex Mono 12";
+    background-color: transparent;
+    text-color: rgba(255, 255, 255, 80%);
+    margin: 0px;
+    padding: 0px;
+    spacing: 0px;
+}
+
+window {
+    background-color: rgba(7, 7, 7, 80%);
+    border: 3px solid;
+    border-color: rgba(97, 175, 239, 5%);
+    border-radius: 12px;
+    width: 70%;
+    location: center;
+    anchor: center;
+    padding: 15px;
+}
+
+/* ---- Mainbox ---- */
+mainbox {
+    children: [ inputbar, listview ];
+    spacing: 15px;
+}
+
+prompt {
+    enabled:      true;
+    text-color:   rgba(255, 255, 255, 80%);
+    padding:      0 5px 0 0;
+}
+
+entry {
+    enabled:            true;
+    font:               "IBM Plex Mono 12";
+    placeholder:        "Choose Wallpaper";
+    text-color:         rgba(255, 255, 255, 80%);
+}
+
+/* ---- Listview ---- */
+listview {
+    background-color: transparent;
+    margin: 0px;
+    columns: 5;
+    lines: 2;
+    fixed-height: true;
+    spacing: 10px;
+    padding: 10px;
+    flow: horizontal;
+    cycle: true;
+}
+
+/* ---- Element ---- */
+element {
+    padding: 10px 15px;
+    spacing: -10px;
+    border-radius: 8px;
+    orientation: vertical;
+    background-color: transparent;
+}
+
+/*
+element normal {
+    background-color: transparent;
+}
+*/
+
+element normal normal {
+    background-color: transparent;
+}
+
+/*
+element normal active {
+    background-color: transparent;
+}
+*/
+
+/*
+element normal urgent {
+    background-color: transparent;
+}
+*/
+
+element alternate normal {
+    background-color: transparent;
+}
+
+/*
+element alternate active {
+    background-color: transparent;
+}
+*/
+
+/*
+element alternate urgent {
+    background-color: transparent;
+}
+*/
+
+element selected {
+    /*background-color:   rgba(97, 175, 239, 50%);*/
+    background-color:   transparent;
+    text-color:         @foreground;
+}
+
+element-icon {
+    size: 1.4em;
+    vertical-align: 0.5;
+    background-color: transparent;
+}
+
+element-text {
+    text-color: rgba(255, 255, 255, 80%);
+    vertical-align: 0.5;
+    horizontal-align: 0.5;
+    font: "IBM Plex Mono 11";
+}

@@ -1,0 +1,46 @@
+[[language]]
+name = "go"
+auto-format = true
+formatter = { command = "goimports" }
+
+[[language]]
+name = "markdown"
+#language-servers = [ "marksman", "ltex-ls", "mpls" ]
+language-servers = [ "marksman", "ltex-ls" ]
+rulers = [120]
+
+[[language]]
+name = "html"
+formatter = { command = 'prettier', args = ["--parser", "html"] }
+
+[[language]]
+name = "json"
+formatter = { command = 'prettier', args = ["--parser", "json"] }
+
+[[language]]
+name = "css"
+formatter = { command = 'prettier', args = ["--parser", "css"] }
+
+[[language]]
+name = "javascript"
+formatter = { command = 'prettier', args = ["--parser", "typescript"] }
+auto-format = true
+
+# markdown previewer https://github.com/mhersson/mpls
+[language-server.mpls]
+command = "mpls"
+# args = ["--no-auto","--port","8989","--browser","explorer.exe"]
+args = ["--browser","explorer.exe"]
+
+[[language]]
+name = "hledger-rules"
+scope = "source.hledger-rules"
+file-types = ["toml", { glob = "*.rules"} ]
+
+[[language]]
+name = "nix"
+formatter = {command = 'nixfmt'}
+
+#[language-server.ltex-ls.config]
+#ltex.disabledRules = { "en-US" = ["PROFANITY"], "en-GB" = ["PROFANITY"] }
+#ltex.dictionary = { "en-US" = ["builtin"], "en-GB" = ["builtin"] }

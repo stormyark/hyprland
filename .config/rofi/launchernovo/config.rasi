@@ -1,0 +1,25 @@
+configuration {
+    modi:                "drun,run,window,filebrowser";
+    show-icons:          true;
+    icon-theme:          "Papirus-Dark";
+    font:                "IBM Plex Mono 12";
+
+    dynamic:             false;
+    fixed-num-lines:     true;
+
+    display-drun:        "";
+    display-run:         "";
+    display-filebrowser: "";
+    display-window:      "";
+    drun-prompt:         " ";
+    
+	drun-display-format:        "{name} [<span weight='light' size='small'><i>({generic})</i></span>]";
+	window-format:              "{w} · {c} · {t}";
+    
+    drun { 
+        lines: 12;
+        columns: 1;
+    }
+}
+
+@theme "~/.config/rofi/themes/pywal-theme.rasi"
