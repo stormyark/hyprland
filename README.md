@@ -1,6 +1,6 @@
 # My Dotfiles
 
-This directory contains the dotfiles for my cachyOS & end4-dorfiles setup
+This directory contains the dotfiles for my arch hyprland setup
 
 ## Requirements
 
