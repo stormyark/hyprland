@@ -30,14 +30,12 @@ This setup includes:
 * Pre-configured system-wide tools and applications
 * Beautiful theming
 * Useful CLI scripts
-* Automated installer
 * Logical file structure for customization
 
 ---
 
 ## 📦 Features
 
-* ⚡ **Fast installer** for all essential packages
 * 🎨 Pre-configured Hyprland desktop with waybar, rofi, fastfetch, and more
 * ✅ Built-in logging and confirmation handling
 * 🧠 Modular and readable configuration
@@ -119,64 +117,15 @@ hyprland/
 
 ```bash
 git clone https://github.com/stormyark/hyprland.git ~/hyprland
-cd ~/hyprland/installer
-stow --adopt .
-sudo pacman -S --needed - < pkglist.txt
+cd ~/hyprland
 ```
 
-### ▶️ 3. Run the Installer
+### ▶️ 3. Apply the dotfiles
 
 ```bash
-chmod +x install.sh
-sudo ./install.sh
+sudo pacman -S --needed - < pkglist.txt
+stow --adopt .
 ```
-
-This script will:
-
-1. Check root and OS
-2. Prompt you for actions
-3. Install all packages
-4. Set up YAY (AUR helper)
-5. Copy dotfiles and configs
-6. Install helper scripts to `~/.local/bin`
-7. Configure wallpapers and theming
-
----
-
-## ✅ After Installation
-
-Once everything is installed:
-
-* You can **start Hyprland** using:
-
-  ```bash
-  start
-  ```
-
-* All **scripts** are available via:
-
-  ```bash
-  ~/.local/bin/script-name.sh
-  ```
-
-* **Wallpapers** are stored in:
-
-  ```bash
-  ~/Pictures/Wallpapers/
-  ```
-
-* **Config files** are located in:
-
-  ```bash
-  ~/.config/
-  ```
-
-* **Shell configs** and `.xinitrc` are in your home:
-
-  ```bash
-  ~/.bashrc, ~/.xinitrc, ~/.bash_profile
-  ```
-
 ---
 
 ## 🤝 FAQ
