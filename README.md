@@ -1,7 +1,5 @@
 <h1 align="center">Dotfiles for Arch Linux</h1>
 
-![Showcase](hyprdots_showcase.png)
-
 <h2 align="center">
   <a>
   <br>
@@ -22,6 +20,9 @@
   </div>
 </h2>
 
+<div align="center">
+    <img src="./hyprdots_showcase.png" align="center" border="solid" border-radius=6px>
+</div>
 
 Welcome to my custom dotfiles repository, built for minimal, modern, and functional **Arch Linux desktop setups** using [`Hyprland`](https://github.com/hyprwm/Hyprland), `waybar`, `kitty`, `rofi`, and many more.
 
