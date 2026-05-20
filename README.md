@@ -123,7 +123,7 @@ cd ~/hyprland
 ### ▶️ 3. Apply the dotfiles
 
 ```bash
-sudo pacman -S --needed - < pkglist.txt
+sudo pacman -S --needed - < installedpackages.md
 stow --adopt .
 ```
 ---
