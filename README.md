@@ -39,8 +39,6 @@ This setup includes:
 
 * ⚡ **Fast installer** for all essential packages
 * 🎨 Pre-configured Hyprland desktop with waybar, rofi, fastfetch, and more
-* 🧰 Handy bash utilities (`wifi-connect`, `ask.sh`, `help-bash.sh`, etc.)
-* 🖼️ Wallpapers + auto wallpaper cycler
 * ✅ Built-in logging and confirmation handling
 * 🧠 Modular and readable configuration
 
