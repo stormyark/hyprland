@@ -1,4 +1,4 @@
-# 🛠️  Dotfiles for Arch Linux
+<h1 align="center">Dotfiles for Arch Linux</h1>
 
 ![Showcase](hyprdots_showcase.png)
 
